@@ -1,5 +1,4 @@
 <?php
-
 require __DIR__ . '/vendor/autoload.php';
 
 // Chargement des variables d'environnement
