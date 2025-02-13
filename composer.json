@@ -1,0 +1,6 @@
+{
+    "require": {
+        "vlucas/phpdotenv": "^5.5",
+        "microsoft/azure-storage-blob": "^1.5"
+    }
+}
