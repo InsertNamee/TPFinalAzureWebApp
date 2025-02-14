@@ -6,12 +6,12 @@ use MicrosoftAzure\Storage\Queue\QueueRestProxy;
 use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
 
 // Configuration Azure
-$blobConnectionString = "your_blob_connection_string";
-$blobContainerName = "your_container_name";
+$blobConnectionString = "https://storageaccounttpfinale.blob.core.windows.net/blobimages";
+$blobContainerName = "blobimages";
 $queueConnectionString = "your_queue_connection_string";
-$queueName = "your_queue_name";
+$queueName = "queuestoragedocker ";
 
-$blobClient = BlobRestProxy::createBlobService($blobConnectionString);
+/*$blobClient = BlobRestProxy::createBlobService($blobConnectionString);
 $queueClient = QueueRestProxy::createQueueService($queueConnectionString);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         echo "No file or dimensions provided";
     }
-}
+}*/
 ?>
 
 <!doctype html>
