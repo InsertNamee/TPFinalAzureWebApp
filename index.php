@@ -8,7 +8,7 @@ use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
 
 $blobClient = BlobRestProxy::createBlobService($config['azure_storage_connection_string']);
 /*$queueClient = QueueRestProxy::createQueueService($config['azure_storage_connection_string']);*/
-/*
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Handle file upload
@@ -35,14 +35,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
             
             // Add to queue
-            $queueClient->createMessage($config['azure_queue_name'], $message);
+            //$queueClient->createMessage($config['azure_queue_name'], $message);
             
             $success = "Image uploaded successfully and queued for processing!";
         }
     } catch (ServiceException $e) {
         $error = "Error: " . $e->getMessage();
     }
-}*/
+}
 ?>
 
 <!DOCTYPE html>
