@@ -1,6 +1,12 @@
 {
     "require": {
-        "vlucas/phpdotenv": "^5.5",
-        "microsoft/azure-storage-blob": "^1.5"
+        "php": ">=7.4",
+        "microsoft/azure-storage-blob": "^1.5",
+        "vlucas/phpdotenv": "^5.3"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
     }
 }
