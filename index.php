@@ -16,11 +16,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $file = $_FILES['image'];
             $dimensions = $_POST['dimensions'];
             
-            // Generate unique blob name
+            // Générer un nom unique pour l'image
             $blobName = uniqid() . '_' . $file['name'];
+            $localPath = __DIR__ . '/src/' . $blobName; // Chemin local dans src
             
             // Upload to blob storage
-            $content = fopen($file['tmp_name'], 'r');
+            $content = fopen($file['tmp_name'], $localPath);
             $blobClient->createBlockBlob(
                 $config['azure_storage_container'],
                 $blobName,
