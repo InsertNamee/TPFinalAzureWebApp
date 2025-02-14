@@ -6,8 +6,8 @@ use MicrosoftAzure\Storage\Blob\BlobRestProxy;
 use MicrosoftAzure\Storage\Queue\QueueRestProxy;
 use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
 
-/*$blobClient = BlobRestProxy::createBlobService($config['azure_storage_connection_string']);
-$queueClient = QueueRestProxy::createQueueService($config['azure_storage_connection_string']);*/
+$blobClient = BlobRestProxy::createBlobService($config['azure_storage_connection_string']);
+/*$queueClient = QueueRestProxy::createQueueService($config['azure_storage_connection_string']);*/
 /*
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
