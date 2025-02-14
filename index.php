@@ -2,6 +2,7 @@
 require __DIR__ . '/vendor/autoload.php';
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Chargement des variables d'environnement
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
@@ -346,6 +347,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </body>
 </html>
 =======
+=======
+>>>>>>> parent of 3e967f3 (bhujniklmegtrfhujikolm!edgtrfjiklo)
 require 'vendor/autoload.php';
 
 use MicrosoftAzure\Storage\Blob\BlobRestProxy;
@@ -465,5 +468,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Content-Type: application/json');
     echo json_encode($result);
 }
+<<<<<<< HEAD
+?>
+>>>>>>> parent of 3e967f3 (bhujniklmegtrfhujikolm!edgtrfjiklo)
+=======
 ?>
 >>>>>>> parent of 3e967f3 (bhujniklmegtrfhujikolm!edgtrfjiklo)
