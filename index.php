@@ -16,25 +16,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $file = $_FILES['image'];
             $dimensions = $_POST['dimensions'];
             
-            // Générer un nom unique et l'envoyer dans le dossier 'ssrc' du Blob Storage
-            $blobName = 'ssrc/' . uniqid() . '_' . $file['name'];
-            $localPath = __DIR__ . '/src/' . basename($blobName); // Stockage temporaire
-
-            if (move_uploaded_file($file['tmp_name'], $localPath)) {
-                // Ouvrir le fichier pour l'upload sur Azure Blob Storage
-                $content = fopen($localPath, 'r');
-                $blobClient->createBlockBlob(
-                    $config['azure_storage_container'],
-                    $blobName,
-                    $content
-                );
-                fclose($content);
-
-                // Supprimer le fichier local après upload
-                unlink($localPath);
-            } else {
-                echo "Erreur lors du déplacement du fichier.";
-            }
+            // Generate unique blob name
+            $blobName = 'src/' . uniqid() . '_' . $file['name'];
+            
+            // Upload to blob storage
+            $content = fopen($file['tmp_name'], 'r');
+            $blobClient->createBlockBlob(
+                $config['azure_storage_container'],
+                $blobName,
+                $content
+            );
             
             // Create message for queue
             $message = json_encode([
@@ -46,14 +37,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Add to queue
             //$queueClient->createMessage($config['azure_queue_name'], $message);
             
-            $success = "Image uploaded successfully to 'ssrc/' and queued for processing!";
+            $success = "Image uploaded successfully and queued for processing!";
         }
     } catch (ServiceException $e) {
         $error = "Error: " . $e->getMessage();
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html>
