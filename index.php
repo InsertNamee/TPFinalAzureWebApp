@@ -20,13 +20,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $blobName = uniqid() . '_' . $file['name'];
             $localPath = __DIR__ . '/src/' . $blobName; // Chemin local dans src
             
-            // Upload to blob storage
-            $content = fopen($file['tmp_name'], $localPath);
-            $blobClient->createBlockBlob(
-                $config['azure_storage_container'],
-                $blobName,
-                $content
-            );
+            if (move_uploaded_file($file['tmp_name'], $localPath)) {
+                // Ouvrir le fichier pour l'upload sur Azure Blob Storage
+                $content = fopen($localPath, 'r');
+                $blobClient->createBlockBlob(
+                    $config['azure_storage_container'],
+                    $blobName,
+                    $content
+                );
+                fclose($content);
+            } else {
+                echo "Erreur lors du déplacement du fichier.";
+            }
             
             // Create message for queue
             $message = json_encode([
