@@ -1,0 +1,6 @@
+{
+    "require": {
+        "microsoft/azure-storage-blob": "^1.5",
+        "microsoft/azure-storage-queue": "^1.3"
+    }
+}
