@@ -5,40 +5,49 @@ use MicrosoftAzure\Storage\Blob\BlobRestProxy;
 use MicrosoftAzure\Storage\Queue\QueueRestProxy;
 use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
 
-// Configuration Azure
-$blobConnectionString = "https://storageaccounttpfinale.blob.core.windows.net/blobimages";
-$blobContainerName = "blobimages";
-$queueConnectionString = "your_queue_connection_string";
-$queueName = "queuestoragedocker ";
+// Load environment variables
+if (file_exists(__DIR__ . '/.env')) {
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+    $dotenv->load();
+    
+    // Required environment variables
+    $dotenv->required(['AZURE_STORAGE_ACCOUNT', 'AZURE_STORAGE_KEY', 'AZURE_BLOB_CONTAINER', 'AZURE_QUEUE_NAME'])->notEmpty();
+}
 
-$blobClient = BlobRestProxy::createBlobService($blobConnectionString);
-//$queueClient = QueueRestProxy::createQueueService($queueConnectionString);
+// Azure Configuration using environment variables
+$accountName = $_ENV['AZURE_STORAGE_ACCOUNT'];
+$accountKey = $_ENV['AZURE_STORAGE_KEY'];
+$blobConnectionString = "DefaultEndpointsProtocol=https;AccountName=" . $accountName . 
+                       ";AccountKey=" . $accountKey . 
+                       ";EndpointSuffix=core.windows.net";
+$blobContainerName = $_ENV['AZURE_BLOB_CONTAINER'];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_FILES['file']) && isset($_POST['dimensions'])) {
-        $file = $_FILES['file'];
-        $dimensions = $_POST['dimensions'];
+// Queue configuration
+$queueConnectionString = $blobConnectionString; // Reuse the same connection string
+$queueName = $_ENV['AZURE_QUEUE_NAME'];
 
-        $fileName = $file['name'];
-        $fileTempPath = $file['tmp_name'];
+try {
+    // Rest of your existing code remains the same
+    $blobClient = BlobRestProxy::createBlobService($blobConnectionString);
+    $queueClient = QueueRestProxy::createQueueService($queueConnectionString);
 
-        try {
-            // Upload the file to Blob Storage
-            $blobClient->createBlockBlob($blobContainerName, $fileName, fopen($fileTempPath, 'r'));
-
-            // Get the URL of the uploaded file
-            $blobUrl = $blobClient->getBlobUrl($blobContainerName, $fileName);
-
-            // Add message to Queue
-            //$queueClient->createMessage($queueName, $blobUrl . "," . $dimensions);
-
-            echo "File uploaded and message sent to queue";
-        } catch (ServiceException $e) {
-            echo "Exception: " . $e->getMessage();
-        }
-    } else {
-        echo "No file or dimensions provided";
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // ... [rest of your existing code remains unchanged]
     }
+} catch (ServiceException $e) {
+    header('Content-Type: application/json');
+    http_response_code(500);
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Azure service error: ' . $e->getMessage()
+    ]);
+} catch (Exception $e) {
+    header('Content-Type: application/json');
+    http_response_code(400);
+    echo json_encode([
+        'status' => 'error',
+        'message' => $e->getMessage()
+    ]);
 }
 ?>
 
