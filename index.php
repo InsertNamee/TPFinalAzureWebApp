@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_FILES['image']) && isset($_POST['dimensions'])) {
             $file = $_FILES['image'];
             $dimensions = $_POST['dimensions'];
-            
+             
             // Generate unique blob name
             $blobName = 'src/' . uniqid() . '_' . $file['name'];
             
