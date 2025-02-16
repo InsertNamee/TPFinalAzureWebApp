@@ -3,7 +3,7 @@ require 'vendor/autoload.php';
 $config = require 'config.php';
 
 use MicrosoftAzure\Storage\Blob\BlobRestProxy;
-use WindowsAzure\Common\ServicesBuilder;
+use MicrosoftAzure\Storage\Queue\QueueRestProxy;
 use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
 
 $blobClient = BlobRestProxy::createBlobService($config['azure_storage_connection_string']);
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
             
             // Add to queue
-            $queueRestProxy->createMessage($message);
+            $queueClient->createMessage($config['azure_queue_name'], $message);
             
             $success = "Image uploaded successfully and queued for processing!";
         }
